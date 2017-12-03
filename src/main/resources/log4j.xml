@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- 控制台日志 -->
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%l]  %m%n" />
+        </layout>
+    </appender>
+    <!-- 默认日志 -->
+    <appender name="DailyRollingFile" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="threshold" value="info" />
+        <param name="file" value="/home/wangjihui/data/logs/zookeeper/zookeeper.log" />
+        <param name="append" value="true" />
+        <param name="datePattern" value="'.'yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%l]  %m%n" />
+        </layout>
+    </appender>
+    <root>
+        <level value="info" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="DailyRollingFile" />
+    </root>
+</log4j:configuration>
