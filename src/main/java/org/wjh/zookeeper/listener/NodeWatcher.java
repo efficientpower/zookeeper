@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class NodeWatcher {
     public void watch(CuratorFramework client, String path, final NodeEventInvoker invoker) throws Exception {
+        @SuppressWarnings("resource")
         PathChildrenCache cache = new PathChildrenCache(client, path, true);
         cache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
         cache.getListenable().addListener(new PathChildrenCacheListener() {
