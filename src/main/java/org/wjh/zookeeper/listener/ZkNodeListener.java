@@ -31,16 +31,17 @@ public class ZkNodeListener {
 
     public void init() {
         try {
-            CuratorFramework client = ZookeeperUtils.getZookeeper();
-            String path = "/" + namespace + "/" + node;
-            nodeWatcher.watch(client, path, new NodeEventInvoker() {
+            NodeEventInvoker invoker = new NodeEventInvoker(){
                 @Override
                 public void invoke(PathChildrenCacheEvent event) {
                     // TODO Auto-generated method stub
                     ChildData data = event.getData();
                     System.out.println(JsonUtils.toString(data)+"==="+new String(data.getData()));
                 }
-            });
+            };
+            CuratorFramework client = ZookeeperUtils.getZookeeper();
+            String path = "/" + namespace + "/" + node;
+            nodeWatcher.watch(client, path, invoker);
         } catch (Exception e) {
             
         }
