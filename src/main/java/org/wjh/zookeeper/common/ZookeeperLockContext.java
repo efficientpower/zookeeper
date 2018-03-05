@@ -17,20 +17,20 @@ public class ZookeeperLockContext implements InitializingBean {
     private CuratorFramework client;
     private HashCalculator hashCalculator = new HashCalculator(concurrency);
 
-    public String getBizStage() {
-        return bizStage;
-    }
-
-    public void setBizStage(String bizStage) {
-        this.bizStage = bizStage;
-    }
-
     public String getNamespace() {
         return namespace;
     }
 
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+    public String getBizStage() {
+        return bizStage;
+    }
+
+    public void setBizStage(String bizStage) {
+        this.bizStage = bizStage;
     }
 
     public int getConcurrency() {
