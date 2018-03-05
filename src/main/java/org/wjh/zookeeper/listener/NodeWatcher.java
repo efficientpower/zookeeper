@@ -17,7 +17,7 @@ public class NodeWatcher {
             @Override
             public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
                 // TODO Auto-generated method stub
-                invoker.invode(event);
+                invoker.invoke(event);
             }
         });
     }
