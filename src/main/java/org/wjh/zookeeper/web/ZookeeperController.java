@@ -26,7 +26,11 @@ public class ZookeeperController {
             lock.lock();
             String path = "/hello-dev/task/1";
             CuratorFramework client = ZookeeperUtils.getZookeeper();
-            client.create().forPath(path, data.getBytes());
+            if(client.checkExists().forPath(path) == null){
+                client.create().forPath(path, data.getBytes());
+            }else{
+                client.setData().forPath(path, data.getBytes());
+            }
         }catch(Exception e){
             return "ERROR";
         }finally {
