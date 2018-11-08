@@ -1,5 +1,6 @@
 package org.wjh.zookeeper.common;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -23,6 +24,7 @@ public class ZookeeperUtils implements BeanFactoryAware {
     private int connectionTimeoutMs = 60000;
     private int baseSleepTimeMs = 10000;
     private int maxRetries = 3;
+    private String nameSpace;
 
     public String getConnectString() {
         return connectString;
@@ -64,6 +66,14 @@ public class ZookeeperUtils implements BeanFactoryAware {
         this.maxRetries = maxRetries;
     }
 
+    public String getNameSpace() {
+        return nameSpace;
+    }
+
+    public void setNameSpace(String nameSpace) {
+        this.nameSpace = nameSpace;
+    }
+
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         // TODO Auto-generated method stub
@@ -74,16 +84,17 @@ public class ZookeeperUtils implements BeanFactoryAware {
         if (CLIENT != null) {
             return CLIENT;
         }
+        if (StringUtils.isBlank(INSTANCE.nameSpace)) {
+            throw new RuntimeException("zookeeper namespace is blank");
+        }
         synchronized (ZookeeperUtils.class) {
             if (CLIENT != null) {
                 return CLIENT;
             }
-            CuratorFramework cf = CuratorFrameworkFactory.builder()
-                    .connectString(INSTANCE.connectString)
-                    .connectionTimeoutMs(INSTANCE.connectionTimeoutMs)
+            CuratorFramework cf = CuratorFrameworkFactory.builder().namespace(INSTANCE.nameSpace)
+                    .connectString(INSTANCE.connectString).connectionTimeoutMs(INSTANCE.connectionTimeoutMs)
                     .sessionTimeoutMs(INSTANCE.sessionTimeoutMs)
-                    .retryPolicy(new ExponentialBackoffRetry(INSTANCE.baseSleepTimeMs, INSTANCE.maxRetries))
-                    .build();
+                    .retryPolicy(new ExponentialBackoffRetry(INSTANCE.baseSleepTimeMs, INSTANCE.maxRetries)).build();
             if (cf != null) {
                 cf.start();
                 CLIENT = cf;

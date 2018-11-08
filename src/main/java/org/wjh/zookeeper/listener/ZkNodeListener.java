@@ -10,16 +10,8 @@ import org.wjh.zookeeper.common.ZookeeperUtils;
 public class ZkNodeListener {
     @Autowired
     private NodeWatcher nodeWatcher;
-    private String namespace;
+
     private String node;
-
-    public String getNamespace() {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
 
     public String getNode() {
         return node;
@@ -40,7 +32,7 @@ public class ZkNodeListener {
                 }
             };
             CuratorFramework client = ZookeeperUtils.getZookeeper();
-            String path = "/" + namespace + "/" + node;
+            String path = "/" + node;
             nodeWatcher.watch(client, path, invoker);
         } catch (Exception e) {
             

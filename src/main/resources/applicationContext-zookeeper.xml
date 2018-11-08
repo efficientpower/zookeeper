@@ -15,14 +15,13 @@
         <property name="connectionTimeoutMs" value="${zookeeperConnectionTimeout}"/>
         <property name="baseSleepTimeMs" value="${zookeeperBaseSleepTimeMs}"/>
         <property name="maxRetries" value="${zookeeperMaxRetries}"/>
+        <property name="nameSpace" value="${zookeeperPrivateNamespace}"/>
     </bean>
     <bean id="helloLockContext" class="org.wjh.zookeeper.common.ZookeeperLockContext">
-        <property name="namespace" value="${zookeeperPrivateNamespace}"/>
         <property name="bizStage" value="helloLockContext"/>
         <property name="concurrency" value="1024"/>
     </bean>
     <bean id="zkNodeListener" class="org.wjh.zookeeper.listener.ZkNodeListener" init-method="init">
-        <property name="namespace" value="${zookeeperPrivateNamespace}"/>
         <property name="node" value="task"/>
     </bean>
 </beans>

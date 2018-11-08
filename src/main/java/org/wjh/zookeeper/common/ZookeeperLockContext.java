@@ -11,19 +11,10 @@ import org.springframework.beans.factory.InitializingBean;
 public class ZookeeperLockContext implements InitializingBean {
 
     public static final String LOCK_ROOT = "/locks";
-    private String namespace;
     private String bizStage;
     private int concurrency;
     private CuratorFramework client;
     private HashCalculator hashCalculator = new HashCalculator(concurrency);
-
-    public String getNamespace() {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
 
     public String getBizStage() {
         return bizStage;
@@ -57,8 +48,8 @@ public class ZookeeperLockContext implements InitializingBean {
      * @throws Exception
      */
     public void init() throws Exception {
-        if (concurrency < 0 || StringUtils.isBlank(namespace) || StringUtils.isBlank(bizStage)) {
-            String errorInfo = String.format("illegal arguments for init. concurrency=%d;namespace=%s;bizStage=%s ", concurrency, namespace, bizStage);
+        if (concurrency < 0 || StringUtils.isBlank(bizStage)) {
+            String errorInfo = String.format("illegal arguments for init. concurrency=%d; bizStage=%s ", concurrency, bizStage);
             throw new Exception(errorInfo);
         }
         hashCalculator = new HashCalculator(concurrency);
@@ -81,7 +72,7 @@ public class ZookeeperLockContext implements InitializingBean {
      */
     private StringBuilder getLockPathStaticPart() {
         StringBuilder sb = new StringBuilder();
-        sb.append("/").append(getNamespace()).append(LOCK_ROOT).append("/").append(bizStage);
+        sb.append(LOCK_ROOT).append("/").append(bizStage);
         return sb;
     }
 
